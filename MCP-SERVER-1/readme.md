@@ -188,40 +188,5 @@ github-mcp/
     └── prompts.go   
 ```
 
----
 
-## Roadmap
 
-### Phase 1
-
-- [ ] Authentication
-- [ ] Repository API
-- [ ] Issue API
-- [ ] Pull Request API
-- [ ] Commit API
-
-### Phase 2
-
-- [ ] GitHub Actions
-- [ ] Releases
-- [ ] Labels
-- [ ] Repository search
-- [ ] Code search
-
-### Phase 3
-
-- [ ] Smart prompts
-- [ ] Repository summaries
-- [ ] Automated code reviews
-- [ ] Release note generation
-- [ ] Repository insights
-
-### Phase 4
-
-- [ ] Unit tests
-- [ ] Integration tests
-- [ ] Docker support
-- [ ] CI/CD
-- [ ] Example configurations
-
----
