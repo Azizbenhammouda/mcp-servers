@@ -14,9 +14,9 @@ func main() {
 		Version: "1.0.0",
 	}, nil)
 	mcp.AddTool(server, &mcp.Tool{
-		Description: "we trying things out",
-		Name:        "dummytool",
-	}, Repository.Ping)
+		Description: "Get information about a GitHub repository",
+		Name:        "get_repository",
+	}, Repository.GetRepository)
 	err := server.Run(context.Background(), &mcp.StdioTransport{})
 	if err != nil {
 		log.Fatal(err)
