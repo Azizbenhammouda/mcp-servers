@@ -19,12 +19,13 @@ func GetRepository(
 	req *mcp.CallToolRequest,
 	input GetRepositoryInput,
 ) (*mcp.CallToolResult, any, error) {
+	// make the structure of the url make a Get request create http client send the request using http client
 
 	url := fmt.Sprintf(
 		"https://api.github.com/repos/%s/%s",
 		input.Owner,
 		input.Name,
-	)
+	) // making the url https://api.github.com/repos/aziz/Hello-World
 
 	httpReq, err := http.NewRequestWithContext(
 		ctx,
@@ -36,7 +37,7 @@ func GetRepository(
 		return nil, nil, fmt.Errorf("failed to create request: %v", err)
 	}
 
-	client := &http.Client{}
+	client := &http.Client{} // the object responsible of making http requests
 
 	resp, err := client.Do(httpReq)
 	if err != nil {
