@@ -63,3 +63,6 @@ func GetRepository(
 		},
 	}, nil, nil
 }
+
+//An io.ReadCloser is an interface that represents a stream of data **resp.Body**
+// . It doesn't contain all the data directly; it provides methods to read it
