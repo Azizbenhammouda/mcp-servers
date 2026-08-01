@@ -49,7 +49,8 @@ func GetRepository(
 		return nil, nil, fmt.Errorf("failed to create request: %v", err)
 	}
 
-	body, err := io.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body) //io.ReadAll: Reads the entire JSON
+	//payload stream from GitHub's server into a byte slice (body).
 	if err != nil {
 		return nil, nil, fmt.Errorf("failed to create request: %v", err)
 	}

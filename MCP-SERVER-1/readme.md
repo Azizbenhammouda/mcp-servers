@@ -174,19 +174,6 @@ Example configuration:
 
 ---
 
-## Project Structure
-
-```
-github-mcp/
-├── go.mod
-├── go.sum
-├──main.go  
-├── Repository/     
-    ├── types.go          // input structs 
-    ├── tools.go           
-    ├── resources.go        
-    └── prompts.go   
-```
 
 
 
