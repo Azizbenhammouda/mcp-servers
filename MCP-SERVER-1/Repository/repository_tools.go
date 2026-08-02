@@ -3,56 +3,32 @@ package Repository
 import (
 	"context"
 	"fmt"
-	"io"
-	"net/http"
 
+	"github.com/Azizbenhammouda/MCP-SERVERS/MCP-SERVER-1/Github"
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 )
+
+type Handler struct {
+	Client *Github.Client
+}
+
+func NewHandler(client *Github.Client) *Handler {
+	return &Handler{
+		Client: client,
+	}
+}
 
 type GetRepositoryInput struct {
 	Owner string `json:"owner"`
 	Name  string `json:"name"`
 }
 
-func GetRepository(
-	ctx context.Context,
-	req *mcp.CallToolRequest,
-	input GetRepositoryInput,
-) (*mcp.CallToolResult, any, error) {
-	// make the structure of the url make a Get request create http client send the request using http client
+func (h *Handler) GetRepository(ctx context.Context, req *mcp.CallToolRequest, input GetRepositoryInput) (*mcp.CallToolResult, any, error) {
 
-	url := fmt.Sprintf(
-		"https://api.github.com/repos/%s/%s",
-		input.Owner,
-		input.Name,
-	) // making the url https://api.github.com/repos/aziz/Hello-World
-
-	httpReq, err := http.NewRequestWithContext(
-		ctx,
-		http.MethodGet,
-		url,
-		nil,
-	)
+	path := fmt.Sprintf("/repos/%s/%s", input.Owner, input.Name)
+	body, err := h.Client.Get(ctx, path)
 	if err != nil {
-		return nil, nil, fmt.Errorf("failed to create request: %v", err)
-	}
-
-	client := &http.Client{} // the object responsible of making http requests
-
-	resp, err := client.Do(httpReq)
-	if err != nil {
-		return nil, nil, fmt.Errorf("failed to create request: %v", err)
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != http.StatusOK {
-		return nil, nil, fmt.Errorf("failed to create request: %v", err)
-	}
-
-	body, err := io.ReadAll(resp.Body) //io.ReadAll: Reads the entire JSON
-	//payload stream from GitHub's server into a byte slice (body).
-	if err != nil {
-		return nil, nil, fmt.Errorf("failed to create request: %v", err)
+		return nil, nil, fmt.Errorf("failed to get repository: %w", err)
 	}
 
 	return &mcp.CallToolResult{
@@ -63,6 +39,3 @@ func GetRepository(
 		},
 	}, nil, nil
 }
-
-//An io.ReadCloser is an interface that represents a stream of data **resp.Body**
-// . It doesn't contain all the data directly; it provides methods to read it
