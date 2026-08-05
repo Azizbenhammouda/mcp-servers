@@ -1,8 +1,8 @@
 import os
 import sys
 from mcp.server.fastmcp import FastMCP
-from github_client import GithubClient
-from repository_handler import RepositoryHandler
+from Github import GithubClient
+from Repository import RepositoryHandler
 
 # Initialize FastMCP Server
 mcp = FastMCP("Github Server")
