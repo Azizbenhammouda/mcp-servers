@@ -4,15 +4,18 @@ Handles OAuth2 authentication for the Gmail API.
 First run: opens a browser window for you to log in and grant access.
 Later runs: reuses/refreshes the saved token in token.json automatically.
 """
-
-import os
+#to check if token.json already exists or not
+import os 
+#for http requests to google's api
 from google.auth.transport.requests import Request
+#Credentials :It holds the access token, the refresh token, expiry time, and the scopes it's allowed to use.
+#loads token from saved file and and checks if its valid
 from google.oauth2.credentials import Credentials
+#for first time login
 from google_auth_oauthlib.flow import InstalledAppFlow
 
-# Scopes define what this app is allowed to do with Gmail.
-# Start read-only; widen later once you need to send/modify mail.
-SCOPES = ["https://www.googleapis.com/auth/gmail.readonly"]
+#for now the agent can only read from gmail
+SCOPES = ["https://www.googleapis.com/auth/gmail.readonly"] #Google OAuth scope identifier
 
 CREDENTIALS_FILE = "credentials.json"
 TOKEN_FILE = "token.json"
@@ -43,7 +46,7 @@ def get_credentials() -> Credentials:
             flow = InstalledAppFlow.from_client_secrets_file(
                 CREDENTIALS_FILE, SCOPES
             )
-            creds = flow.run_local_server(port=0)
+            creds = flow.run_local_server(port=0) #open any free local port
 
         # Save the (refreshed or new) credentials for next time
         with open(TOKEN_FILE, "w") as token:
