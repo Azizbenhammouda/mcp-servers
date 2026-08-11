@@ -15,18 +15,38 @@ def get_gmail_service():
 
 
 def list_recent_emails(max_results: int = 10):
-    service = get_gmail_service()
+  """
+    Fetch the most recent emails from the user's Gmail inbox.
+
+    Makes two API calls per batch: first to list message IDs, then one
+    per message to fetch its headers (From, Subject, Date) and snippet.
+
+    Args:
+        max_results: Maximum number of emails to fetch. Defaults to 10.
+
+    Returns:
+        A list of dicts, one per email, each shaped like:
+        {
+            "id": "18e4f2a1b2c3d4e5",
+            "from": "someone@example.com",
+            "subject": "Meeting tomorrow",
+            "date": "Tue, 11 Aug 2026 09:15:00 -0700",
+            "snippet": "Hey, just wanted to confirm..."
+        }
+    """
+    
+  service = get_gmail_service()
 
     # Stage 1: get a bare list of message IDs
-    results = service.users().messages().list(
+  results = service.users().messages().list(
         userId="me", maxResults=max_results
     ).execute()
 
-    messages = results.get("messages", [])
+  messages = results.get("messages", [])
 
     # Stage 2: fetch details for each message ID
-    emails = []
-    for msg in messages:
+  emails = []
+  for msg in messages:
         msg_data = service.users().messages().get(
             userId="me", id=msg["id"], format="metadata",
             metadataHeaders=["From", "Subject", "Date"]
@@ -42,4 +62,4 @@ def list_recent_emails(max_results: int = 10):
         }
         emails.append(email_info)
 
-    return emails
+  return emails
