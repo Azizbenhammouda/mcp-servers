@@ -5,22 +5,26 @@
 # (internal IDs, MIME structure, etc)
 
 
-from googleapiclient.discovery import build #to make a gmail client
-
-
+from googleapiclient.discovery import build
 from auth import get_credentials
+
+
 def get_gmail_service():
-  creds = get_credentials()
-  return build("gmail","v1",credentials=creds)
+    creds = get_credentials()
+    return build("gmail", "v1", credentials=creds)
 
 
-def  list_recent_emails(max_results: int = 10):
+def list_recent_emails(max_results: int = 10):
     service = get_gmail_service()
+
+    # Stage 1: get a bare list of message IDs
     results = service.users().messages().list(
         userId="me", maxResults=max_results
     ).execute()
+
     messages = results.get("messages", [])
 
+    # Stage 2: fetch details for each message ID
     emails = []
     for msg in messages:
         msg_data = service.users().messages().get(
