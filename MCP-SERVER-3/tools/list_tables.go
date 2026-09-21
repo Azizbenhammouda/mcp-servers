@@ -3,6 +3,8 @@ package tools
 import (
 	"context"
 	"database/sql"
+	"fmt"
+	"os"
 	"strings"
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
@@ -10,7 +12,14 @@ import (
 )
 
 func Connect_db() (*sql.DB, error) {
-	db, err := sql.Open("sqlite", "../store.db")
+	path := os.Getenv("STORE_DB_PATH")
+	if path == "" {
+		return nil, fmt.Errorf("STORE_DB_PATH is not set")
+	}
+	if _, err := os.Stat(path); err != nil {
+		return nil, err
+	}
+	db, err := sql.Open("sqlite", path)
 	if err != nil {
 		return nil, err
 	}
@@ -20,7 +29,10 @@ func Connect_db() (*sql.DB, error) {
 	}
 	return db, nil
 }
-func List_tables(ctx context.Context, req *mcp.CallToolRequest, any any) (*mcp.CallToolResult, any, error) {
+
+type args struct{}
+
+func List_tables(ctx context.Context, req *mcp.CallToolRequest, ar args) (*mcp.CallToolResult, any, error) {
 	db, err := Connect_db()
 	if err != nil {
 		return nil, nil, err
