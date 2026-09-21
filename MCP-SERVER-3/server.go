@@ -10,7 +10,7 @@ import (
 
 func main() {
 	server := mcp.NewServer(&mcp.Implementation{Name: "sqlite-mcp-server"}, nil)
-	server.AddTool(&mcp.Tool{
+	mcp.AddTool(server, &mcp.Tool{
 		Name:        "list_tables",
 		Description: "Lists all tables in the store database. Call this first to see what data is available, then use describe_table for column details.",
 	}, tools.List_tables)

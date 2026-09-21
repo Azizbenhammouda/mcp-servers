@@ -20,10 +20,10 @@ func Connect_db() (*sql.DB, error) {
 	}
 	return db, nil
 }
-func List_tables(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func List_tables(ctx context.Context, req *mcp.CallToolRequest, any any) (*mcp.CallToolResult, any, error) {
 	db, err := Connect_db()
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	defer db.Close()
 	query := `
@@ -33,7 +33,7 @@ func List_tables(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolRe
 	`
 	rows, err := db.Query(query)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	result := []string{}
 	defer rows.Close()
@@ -41,16 +41,16 @@ func List_tables(ctx context.Context, req *mcp.CallToolRequest) (*mcp.CallToolRe
 		var name string
 		err := rows.Scan(&name)
 		if err != nil {
-			return nil, err
+			return nil, nil, err
 		}
 		result = append(result, name)
 	}
 	if err := rows.Err(); err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	return &mcp.CallToolResult{
 		Content: []mcp.Content{
 			&mcp.TextContent{Text: strings.Join(result, "\n")},
 		},
-	}, nil
+	}, nil, nil
 }
